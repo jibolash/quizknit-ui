@@ -28,4 +28,4 @@ QuizKnit is a web application that generates quizzes based on a body of text pro
 
 1. Visit http://localhost:5173/
 2. Enter the body of text you want to generate a quiz from.
-3. Click "Generate Quiz" and see your questions.1
+3. Click "Generate Quiz" and see your questions
