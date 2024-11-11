@@ -4,7 +4,7 @@ QuizKnit is a web application that generates quizzes based on a body of text pro
 
 ## Technologies Used
 
-- **Frontend**: HTML, CSS, TypeScript
+- **Frontend**: HTML, CSS, TypeScript, React, Vite
 - **Backend**: Node.js, Express
 - **Quiz Generation API**: OpenAI
   
