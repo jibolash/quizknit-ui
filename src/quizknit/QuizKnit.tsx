@@ -107,6 +107,8 @@ export function QuizKnit() {
                             loading={loading}
                             icon={<RocketOutlined />}
                             disabled={value.length === 0}
+                            size="large"
+                            style={{backgroundColor: 'green'}}
                         >
                             Generate Quiz
                         </Button>
