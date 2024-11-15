@@ -7,7 +7,7 @@ function App() {
     <ConfigProvider
       theme={{
         token: {
-          colorPrimary: "green",
+          colorPrimary: "#604CE2",
         },
         components: {
           Button: {
@@ -24,10 +24,10 @@ function App() {
       <Flex vertical style={{ minHeight: "100vh" }}>
         <Flex vertical style={{ flexGrow: 1 }}>
           <Flex
-            justify="center"
+            // justify="center"
             align="center"
             id="navbar"
-            style={{ height: "60px", backgroundColor: "green" }}
+            style={{ height: "60px", backgroundColor: "#604CE2" }}
           >
             <Space align="end">
               <NavLink
@@ -35,7 +35,7 @@ function App() {
                 style={{
                   color: "white",
                   fontSize: "20px",
-                  fontFamily: "Open Sans",
+                  marginLeft: "12px",
                 }}
               >
                 <strong>Quiz Knit</strong>

@@ -24,6 +24,6 @@ export const QuizKnitApi = {
             throw new Error('Could not create quiz');
         }
         const createdQuiz = await response.json();
-        return createdQuiz;
+        return JSON.parse(createdQuiz);
     },
 }
