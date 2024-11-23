@@ -1,6 +1,7 @@
 import { ConfigProvider, Flex, Space } from "antd";
 import { NavLink, Route, Routes } from "react-router-dom";
 import { QuizKnit } from "./quizknit/QuizKnit";
+import { Quiz } from "./quizknit/Quiz";
 
 function App() {
   return (
@@ -29,36 +30,44 @@ function App() {
             id="navbar"
             style={{ height: "60px", backgroundColor: "#604CE2" }}
           >
-            <Space align="end">
-              <NavLink
-                to="/"
-                style={{
-                  color: "white",
-                  fontSize: "20px",
-                  marginLeft: "12px",
-                }}
-              >
-                <strong>Quiz Knit</strong>
-              </NavLink>
-            </Space>
+            <NavLink
+              to="/"
+              style={{
+                color: "white",
+                fontSize: "20px",
+                marginLeft: "12px",
+              }}
+            >
+              <Flex align="end">
+                <Space size={4}>
+                  <Flex gap={8}>
+                    <span className="logo">Q</span>
+                    <span style={{ fontWeight: 600 }}>Quiz Knit</span>
+                  </Flex>
+                  {/* <Flex>
+                    <span style={{ fontSize: "14px" }}>by Mayowa Sogbein</span>
+                  </Flex> */}
+                </Space>
+              </Flex>
+            </NavLink>
           </Flex>
           <Flex id="main" justify="center">
             <Routes>
               <Route path="/" element={<QuizKnit />} />
+              <Route path="/quiz/:id" element={<Quiz />} />
             </Routes>
           </Flex>
         </Flex>
         <Flex
           justify="center"
           align="center"
-          vertical
           id="footer"
           style={{ height: "60px" }}
         >
-          <Flex>
-            <strong style={{ color: "black" }}>QuizKnit</strong>
+          <Flex gap={8} align="center" justify="center">
+            <span className="logo-footer">Q</span>
+            <span style={{ fontWeight: 600, fontSize: "14px" }}>Quiz Knit</span>
           </Flex>
-          <Flex>Copyright &copy; 2024, Mayowa Sogbein</Flex>
         </Flex>
       </Flex>
     </ConfigProvider>

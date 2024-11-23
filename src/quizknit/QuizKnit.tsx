@@ -1,25 +1,17 @@
-import {
-  Button,
-  Flex,
-  FloatButton,
-  Radio,
-  Space,
-  Spin,
-  Tour,
-  TourProps,
-} from "antd";
+import { Button, Flex, FloatButton, Spin, Tour, TourProps } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { useRef, useState } from "react";
 import { QuizKnitApi } from "./QuizKnitApi";
-import { sampleInput, sampleQuiz } from "./sampleData";
+import { sampleInput } from "./sampleData";
 import {
-  CheckOutlined,
-  CopyOutlined,
   QuestionCircleOutlined,
   RocketOutlined,
+  SaveOutlined,
 } from "@ant-design/icons";
 import { isMobile } from "react-device-detect";
 import { QuestionAndOptions } from "./QuestionAndOptions";
+import { LoadingOutlined } from "@ant-design/icons";
+import { SavedQuizModal } from "./SavedQuizModal";
 
 export type QuizTextInput = {
   textInput: string;
@@ -39,14 +31,14 @@ export function QuizKnit() {
   const ref1 = useRef(null);
   const ref2 = useRef(null);
   const ref3 = useRef(null);
-  const ref4 = useRef(null);
 
   const [value, setValue] = useState(sampleInput);
   const [loading, setLoading] = useState(false);
-  const [resultValue, setResultValue] = useState(sampleQuiz);
-  const [copyShowing, setCopyShowing] = useState(true);
   const [openTour, setOpenTour] = useState<boolean>(false);
-  const [questions, setQuestions] = useState<Question[]>([]);
+  const [quiz, setQuiz] = useState<Question[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [savingQuiz, setSavingQuiz] = useState(false);
+  const [savedQuizId, setSavedQuizId] = useState("");
 
   const steps: TourProps["steps"] = [
     {
@@ -74,8 +66,9 @@ export function QuizKnit() {
 
   const onGenerateQuiz = async () => {
     setLoading(true);
-    setResultValue("Generating quiz...");
     if (!value) {
+      setLoading(false);
+      alert("No text provided!");
       return;
     }
     const quizTextInput: QuizTextInput = {
@@ -83,24 +76,30 @@ export function QuizKnit() {
     };
     try {
       const createdQuiz = await QuizKnitApi.generateQuiz(quizTextInput);
-      console.log("createdQuiz", createdQuiz);
       if (createdQuiz) {
-        setQuestions(createdQuiz);
-        setResultValue(createdQuiz);
+        setQuiz(createdQuiz);
         setLoading(false);
       }
-    } catch {
+    } catch (e) {
       setLoading(false);
-      console.log("Please enter text input");
+      alert("Could not generate quiz, please try again")!;
     }
   };
 
-  const onCopyClicked = () => {
-    setCopyShowing(false);
-    navigator.clipboard.writeText(resultValue);
-    setTimeout(() => {
-      setCopyShowing(true);
-    }, 3000);
+  const saveQuiz = async () => {
+    setSavingQuiz(true);
+    if (quiz.length > 0) {
+      try {
+        const savedQuiz = await QuizKnitApi.saveQuiz(quiz);
+        if (savedQuiz) {
+          setSavedQuizId(savedQuiz._id); // add a quiz id key to this object on backend
+          setIsModalOpen(true);
+          setSavingQuiz(false);
+        }
+      } catch (e) {
+        console.log("e", e);
+      }
+    }
   };
 
   return (
@@ -128,7 +127,7 @@ export function QuizKnit() {
               onClick={onGenerateQuiz}
               loading={loading}
               icon={<RocketOutlined />}
-              disabled={value.length === 0}
+              //   disabled={value.length === 0}
               size="large"
               style={{ backgroundColor: "#604CE2" }}
             >
@@ -138,22 +137,25 @@ export function QuizKnit() {
         </Flex>
         <Flex vertical gap="small" align="center">
           <div>
-            {questions.length > 0 ? (
-              <h3>Questions</h3>
+            {quiz.length > 0 ? (
+              <Flex gap={24} align="center">
+                <h3>Questions</h3>
+                {savingQuiz ? (
+                  <Spin indicator={<LoadingOutlined spin />} />
+                ) : (
+                  <Button
+                    type="default"
+                    icon={<SaveOutlined />}
+                    onClick={saveQuiz}
+                  />
+                )}
+              </Flex>
             ) : (
               <h3 style={{ visibility: "hidden" }}>Welcome!</h3>
             )}
           </div>
           <Flex ref={ref3} style={{ width: "500px" }} vertical gap="12px">
-            {/* <TextArea
-              value={resultValue}
-              // onChange={(e) => setResultValue(e.target.value)}
-              placeholder="Enter text"
-              autoSize={{ minRows: 25, maxRows: 25 }}
-              style={{ width: isMobile ? 350 : 450, caretColor: "transparent" }}
-              disabled={loading}
-            /> */}
-            {questions.length < 1 && (
+            {quiz.length < 1 && (
               <Flex
                 style={{
                   padding: "32px",
@@ -171,8 +173,8 @@ export function QuizKnit() {
                 </div>
               </Flex>
             )}
-            {questions.length > 0 &&
-              questions.map((questionItem, index) => (
+            {quiz.length > 0 &&
+              quiz.map((questionItem, index) => (
                 <QuestionAndOptions
                   questionItem={questionItem}
                   index={index}
@@ -180,90 +182,20 @@ export function QuizKnit() {
                 />
               ))}
           </Flex>
-          {loading && <Spin />}
-          {/* {!loading && resultValue && (
-            <Button
-              ref={ref4}
-              onClick={onCopyClicked}
-              icon={copyShowing ? <CopyOutlined /> : <CheckOutlined />}
-            />
-          )} */}
+          {loading && <Spin indicator={<LoadingOutlined spin />} />}
         </Flex>
       </Flex>
       <Tour open={openTour} onClose={() => setOpenTour(false)} steps={steps} />
       <FloatButton
         icon={<QuestionCircleOutlined />}
         type="default"
-        style={{ right: 24, top: 10 }}
         onClick={() => setOpenTour(true)}
+      />
+      <SavedQuizModal
+        quizId={savedQuizId}
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
       />
     </>
   );
 }
-
-let questionsArr = [
-  {
-    question: "From Earth, the Milky Way appears as:",
-    options: [
-      {
-        text: "A hazy band of light",
-        isCorrectAnswer: true,
-      },
-      {
-        text: "A spiral galaxy",
-        isCorrectAnswer: false,
-      },
-      {
-        text: "A bright star",
-        isCorrectAnswer: false,
-      },
-      {
-        text: "A circle in the sky",
-        isCorrectAnswer: false,
-      },
-    ],
-  },
-  {
-    question: "The term Milky Way is a translation of the Latin:",
-    options: [
-      {
-        text: "Via lactea",
-        isCorrectAnswer: false,
-      },
-      {
-        text: "Galaxías kýklos",
-        isCorrectAnswer: true,
-      },
-      {
-        text: "Hazy band",
-        isCorrectAnswer: false,
-      },
-      {
-        text: "Solar System",
-        isCorrectAnswer: false,
-      },
-    ],
-  },
-  {
-    question:
-      "Who was the first to resolve the band of light into individual stars with his telescope?",
-    options: [
-      {
-        text: "Galileo Galilei",
-        isCorrectAnswer: true,
-      },
-      {
-        text: "Edwin Hubble",
-        isCorrectAnswer: false,
-      },
-      {
-        text: "Harlow Shapley",
-        isCorrectAnswer: false,
-      },
-      {
-        text: "Heber Doust Curtis",
-        isCorrectAnswer: false,
-      },
-    ],
-  },
-];
