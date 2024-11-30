@@ -9,20 +9,21 @@ import { QuestionAndOptions } from "./QuestionAndOptions";
 export function Quiz() {
   let { id } = useParams();
   const [quiz, setQuiz] = useState<Question[]>([]);
+  const [quizLoaded, setQuizLoaded] = useState(false);
 
   const {
-    loading: loading,
-    status: status,
-    error: error,
+    loading: _loading,
+    // status: status,
+    // error: error,
     execute: loadQuiz,
   } = useAsync(() => QuizKnitApi.getQuizWithId(id || ""), [], {
     onSuccess(result) {
       console.log("result", result);
+      setQuizLoaded(true);
       setQuiz(result);
     },
-    onError(e) {
-      console.log(loading);
-      console.log("error", e);
+    onError(_e) {
+      setQuizLoaded(false);
     },
   });
 
@@ -31,6 +32,16 @@ export function Quiz() {
       loadQuiz();
     } catch (e) {}
   }, []);
+
+  if (!quizLoaded) {
+    return (
+      <Flex vertical gap="12px" style={{ marginTop: "12px" }}>
+        <p>
+          Could not load quiz, please confirm the link to the quiz is correct
+        </p>
+      </Flex>
+    );
+  }
 
   return (
     <Flex vertical gap="12px" style={{ marginTop: "12px" }}>

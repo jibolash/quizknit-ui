@@ -1,4 +1,12 @@
-import { Button, Flex, FloatButton, Spin, Tour, TourProps } from "antd";
+import {
+  Button,
+  Flex,
+  FloatButton,
+  Spin,
+  Tour,
+  TourProps,
+  Typography,
+} from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { useRef, useState } from "react";
 import { QuizKnitApi } from "./QuizKnitApi";
@@ -90,35 +98,41 @@ export function QuizKnit() {
     setSavingQuiz(true);
     if (quiz.length > 0) {
       try {
-        const savedQuiz = await QuizKnitApi.saveQuiz(quiz);
-        if (savedQuiz) {
-          setSavedQuizId(savedQuiz._id); // add a quiz id key to this object on backend
+        const savedQuizId = await QuizKnitApi.saveQuiz(quiz);
+        if (savedQuizId) {
+          setSavedQuizId(savedQuizId); // add a quiz id key to this object on backend
           setIsModalOpen(true);
           setSavingQuiz(false);
         }
       } catch (e) {
-        console.log("e", e);
+        alert("Could not save quiz, please try again later");
+        setSavingQuiz(false);
       }
     }
   };
 
   return (
     <>
-      <Flex justify="center" wrap="wrap" gap={"small"} id="homeContainer">
-        <Flex vertical gap="small" align="center">
-          <h3>Enter text</h3>
+      <Flex
+        justify="center"
+        wrap="wrap"
+        gap={"middle"}
+        id="homeContainer"
+        style={{ padding: "12px" }}
+      >
+        <Flex vertical gap="middle" align="center">
           <Flex ref={ref1}>
             <TextArea
               value={value}
               onChange={(e) => setValue(e.target.value)}
-              placeholder="Enter text"
-              autoSize={{ minRows: 15, maxRows: 15 }}
+              placeholder="Type or paste text you want to generate a quiz from here"
+              autoSize={{ minRows: 15 }}
               style={{
-                width: isMobile ? 350 : 450,
+                // width: "100%",
+                width: isMobile ? 350 : 550,
               }}
               disabled={loading}
               id="inputTextArea"
-              // allowClear
             />
           </Flex>
           <Flex justify="center" ref={ref2}>
@@ -127,7 +141,7 @@ export function QuizKnit() {
               onClick={onGenerateQuiz}
               loading={loading}
               icon={<RocketOutlined />}
-              //   disabled={value.length === 0}
+              disabled={value.length === 0}
               size="large"
               style={{ backgroundColor: "#604CE2" }}
             >
@@ -136,41 +150,26 @@ export function QuizKnit() {
           </Flex>
         </Flex>
         <Flex vertical gap="small" align="center">
-          <div>
-            {quiz.length > 0 ? (
-              <Flex gap={24} align="center">
-                <h3>Questions</h3>
-                {savingQuiz ? (
-                  <Spin indicator={<LoadingOutlined spin />} />
-                ) : (
-                  <Button
-                    type="default"
-                    icon={<SaveOutlined />}
-                    onClick={saveQuiz}
-                  />
-                )}
-              </Flex>
-            ) : (
-              <h3 style={{ visibility: "hidden" }}>Welcome!</h3>
-            )}
-          </div>
-          <Flex ref={ref3} style={{ width: "500px" }} vertical gap="12px">
+          <Flex ref={ref3} style={{ width: "90%" }} vertical gap="12px">
             {quiz.length < 1 && (
               <Flex
                 style={{
                   padding: "32px",
                   borderRadius: "15px",
                   backgroundColor: "white",
-                  justifyContent: "center",
-                  height: "50px",
+                  // justifyContent: "center",
                 }}
                 vertical
                 gap="12px"
               >
-                <div>
-                  Just exploring? Click <strong>Generate Quiz</strong> to try
-                  out a sample quiz using our demo text about the Milky Way!"
-                </div>
+                <Typography.Text>
+                  Type or paste text you want to generate a quiz from in the
+                  textbox.
+                </Typography.Text>
+                <Typography.Text>
+                  Just exploring? Click <strong>Generate Quiz</strong> to
+                  generate a quiz using our demo text about the Milky Way!
+                </Typography.Text>
               </Flex>
             )}
             {quiz.length > 0 &&
@@ -181,7 +180,18 @@ export function QuizKnit() {
                   key={index}
                 />
               ))}
+            {quiz.length > 0 && (
+              <Button
+                type="primary"
+                icon={<SaveOutlined />}
+                onClick={saveQuiz}
+                loading={savingQuiz}
+              >
+                Save Quiz
+              </Button>
+            )}
           </Flex>
+
           {loading && <Spin indicator={<LoadingOutlined spin />} />}
         </Flex>
       </Flex>

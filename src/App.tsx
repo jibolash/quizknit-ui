@@ -1,7 +1,9 @@
 import { ConfigProvider, Flex, Space } from "antd";
-import { NavLink, Route, Routes } from "react-router-dom";
+import { Link, NavLink, Route, Routes } from "react-router-dom";
 import { QuizKnit } from "./quizknit/QuizKnit";
 import { Quiz } from "./quizknit/Quiz";
+import { About } from "./About";
+import { Discover } from "./quizknit/Discover";
 
 function App() {
   return (
@@ -14,7 +16,7 @@ function App() {
           Button: {
             defaultShadow: "0 0 0 rgba(0, 0, 0, 0.02)",
             primaryShadow: "0 0 0 rgba(0, 0, 0, 0.02)",
-            borderRadiusLG: 25,
+            // borderRadiusLG: 25,
           },
           Input: {
             paddingBlock: 6,
@@ -47,6 +49,9 @@ function App() {
                   {/* <Flex>
                     <span style={{ fontSize: "14px" }}>by Mayowa Sogbein</span>
                   </Flex> */}
+                  {/* <Flex>
+                    <Link to="/discover"></Link>
+                  </Flex> */}
                 </Space>
               </Flex>
             </NavLink>
@@ -55,18 +60,25 @@ function App() {
             <Routes>
               <Route path="/" element={<QuizKnit />} />
               <Route path="/quiz/:id" element={<Quiz />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/discover" element={<Discover />} />
             </Routes>
           </Flex>
         </Flex>
         <Flex
-          justify="center"
+          justify="space-between"
           align="center"
           id="footer"
-          style={{ height: "60px" }}
+          style={{ height: "60px", margin: "0 12px 0 12px", fontSize: "14px" }}
         >
           <Flex gap={8} align="center" justify="center">
             <span className="logo-footer">Q</span>
-            <span style={{ fontWeight: 600, fontSize: "14px" }}>Quiz Knit</span>
+            <span style={{ fontWeight: 600 }}>Quiz Knit</span>
+          </Flex>
+          <Flex>
+            <Link to="/about" style={{ color: "gray" }}>
+              About
+            </Link>
           </Flex>
         </Flex>
       </Flex>

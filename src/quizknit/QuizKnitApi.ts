@@ -2,6 +2,7 @@ import { Question, QuizTextInput } from "./QuizKnit";
 
 function createRequest(path: string, init: RequestInit): Request {
   const origin = "http://localhost:3000/";
+  // const origin = "https://quizknit-api.fly.dev/";
   const apiPath = "api/";
   const url = `${origin}${apiPath}${path}`;
   init.headers = { ...init.headers, "X-BFF-CSRF": "true" };
@@ -38,7 +39,8 @@ export const QuizKnitApi = {
       throw new Error("Could not save questions");
     }
     const savedQuiz = await response.json();
-    return savedQuiz;
+    console.log("savedQuiz", savedQuiz);
+    return savedQuiz.id;
   },
 
   async getQuizWithId(quizId: string): Promise<any> {
