@@ -16,7 +16,6 @@ function App() {
           Button: {
             defaultShadow: "0 0 0 rgba(0, 0, 0, 0.02)",
             primaryShadow: "0 0 0 rgba(0, 0, 0, 0.02)",
-            // borderRadiusLG: 25,
           },
           Input: {
             paddingBlock: 6,
