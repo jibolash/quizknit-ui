@@ -60,7 +60,6 @@ export function QuizKnit(props: QuizKnitProps) {
     };
     try {
       const createdQuiz = await QuizKnitApi.generateQuiz(quizTextInput);
-      console.log("createdQuiz", createdQuiz);
       if (createdQuiz) {
         setQuiz(createdQuiz);
         setLoading(false);

@@ -1,5 +1,5 @@
-import { CalendarOutlined } from "@ant-design/icons";
-import { Card, Flex } from "antd";
+import { CalendarOutlined, LoadingOutlined } from "@ant-design/icons";
+import { Card, Flex, Spin } from "antd";
 import { Link } from "react-router-dom";
 import { QuizKnitApi } from "./QuizKnitApi";
 import { useEffect, useState } from "react";
@@ -10,7 +10,7 @@ export function Explore() {
   const [allQuizzes, setAllQuizzes] = useState<Quiz[]>([]);
 
   const {
-    loading: _loading,
+    loading: loadingQuizzes,
     status: _status,
     error: _error,
     execute: fetchAllQuizzes,
@@ -23,6 +23,14 @@ export function Explore() {
   useEffect(() => {
     fetchAllQuizzes();
   }, []);
+
+  if (loadingQuizzes) {
+    return (
+      <Flex wrap gap={"small"} style={{ margin: "12px" }}>
+        <Spin indicator={<LoadingOutlined spin />} />
+      </Flex>
+    );
+  }
 
   return (
     <Flex wrap gap={"small"} style={{ margin: "12px" }}>

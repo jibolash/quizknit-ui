@@ -1,11 +1,11 @@
-import { Button, Flex } from "antd";
+import { Button, Flex, Spin } from "antd";
 import { useAsync } from "react-async-hook";
 import { useParams } from "react-router-dom";
 import { QuizKnitApi } from "./QuizKnitApi";
 import { useEffect, useState } from "react";
 import { QuestionAndOptions } from "./QuestionAndOptions";
 import { Quiz } from "./QuizKnit";
-import { ShareAltOutlined } from "@ant-design/icons";
+import { LoadingOutlined, ShareAltOutlined } from "@ant-design/icons";
 import { ShareQuizModal } from "./ShareQuizModal";
 
 export function ViewQuiz() {
@@ -15,13 +15,12 @@ export function ViewQuiz() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const {
-    loading: _loading,
+    loading: loadingQuiz,
     // status: status,
     // error: error,
     execute: loadQuiz,
   } = useAsync(() => QuizKnitApi.getQuizWithId(id || ""), [], {
     onSuccess(result) {
-      console.log("result", result);
       setQuizLoaded(true);
       setQuiz(result);
     },
@@ -35,6 +34,14 @@ export function ViewQuiz() {
       loadQuiz();
     } catch (e) {}
   }, []);
+
+  if (loadingQuiz) {
+    return (
+      <Flex vertical gap="12px" style={{ marginTop: "12px" }}>
+        <Spin indicator={<LoadingOutlined spin />} />
+      </Flex>
+    );
+  }
 
   if (!quizLoaded) {
     return (
