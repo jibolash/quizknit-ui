@@ -1,6 +1,6 @@
-import { Button, Flex, Spin, Tour, TourProps, Typography } from "antd";
+import { Button, Flex, Spin, Typography } from "antd";
 import TextArea from "antd/es/input/TextArea";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { QuizKnitApi } from "./QuizKnitApi";
 import { sampleInput } from "./sampleData";
 import { RocketOutlined, SaveOutlined } from "@ant-design/icons";
@@ -8,6 +8,7 @@ import { isMobile } from "react-device-detect";
 import { QuestionAndOptions } from "./QuestionAndOptions";
 import { LoadingOutlined } from "@ant-design/icons";
 import { SavedQuizModal } from "./SavedQuizModal";
+import { Link } from "react-router-dom";
 
 export type QuizTextInput = {
   textInput: string;
@@ -23,42 +24,33 @@ export interface Question {
   options: Option[];
 }
 
-export function QuizKnit() {
-  const ref1 = useRef(null);
-  const ref2 = useRef(null);
-  const ref3 = useRef(null);
+export interface Quiz {
+  _id: string;
+  quizTitle: string;
+  questions: Question[];
+  dateCreated: string;
+}
 
+interface QuizKnitProps {
+  tourSteps: {
+    ref1: React.MutableRefObject<null>;
+    ref2: React.MutableRefObject<null>;
+    ref3: React.MutableRefObject<null>;
+  };
+  setOpenTour: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export function QuizKnit(props: QuizKnitProps) {
   const [value, setValue] = useState(sampleInput);
   const [loading, setLoading] = useState(false);
-  const [openTour, setOpenTour] = useState<boolean>(false);
-  const [quiz, setQuiz] = useState<Question[]>([]);
+  const [quiz, setQuiz] = useState<Quiz>();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [savingQuiz, setSavingQuiz] = useState(false);
   const [savedQuizId, setSavedQuizId] = useState("");
 
-  const steps: TourProps["steps"] = [
-    {
-      title: "Enter text",
-      description: "Enter text you want to generate a quiz from.",
-      target: () => ref1.current,
-    },
-    {
-      title: "Generate Quiz",
-      description:
-        "Click here to generate a quiz based on the text you provided.",
-      target: () => ref2.current,
-    },
-    {
-      title: "View Quiz",
-      description:
-        "Your AI generated quiz questions will appear here. You will be able to save the quiz afterwards.",
-      target: () => ref3.current,
-    },
-  ];
-
   const onGenerateQuiz = async () => {
     setLoading(true);
-    if (!value) {
+    if (!value.trim()) {
       setLoading(false);
       alert("No text provided!");
       return;
@@ -68,6 +60,7 @@ export function QuizKnit() {
     };
     try {
       const createdQuiz = await QuizKnitApi.generateQuiz(quizTextInput);
+      console.log("createdQuiz", createdQuiz);
       if (createdQuiz) {
         setQuiz(createdQuiz);
         setLoading(false);
@@ -80,7 +73,7 @@ export function QuizKnit() {
 
   const saveQuiz = async () => {
     setSavingQuiz(true);
-    if (quiz.length > 0) {
+    if (quiz && quiz.questions.length > 0) {
       try {
         const savedQuizId = await QuizKnitApi.saveQuiz(quiz);
         if (savedQuizId) {
@@ -89,6 +82,7 @@ export function QuizKnit() {
           setSavingQuiz(false);
         }
       } catch (e) {
+        console.log("e", e);
         alert("Could not save quiz, please try again later");
         setSavingQuiz(false);
       }
@@ -105,7 +99,7 @@ export function QuizKnit() {
         style={{ padding: "12px" }}
       >
         <Flex vertical gap="small" align="center">
-          <Flex ref={ref3} vertical gap="12px">
+          <Flex ref={props.tourSteps.ref3} vertical gap="12px">
             <Flex
               style={{
                 padding: "20px",
@@ -121,7 +115,7 @@ export function QuizKnit() {
                 <strong style={{ color: "#604CE2" }}>Generate Quiz</strong>{" "}
                 below
               </Typography.Text>
-              <Flex ref={ref1}>
+              <Flex ref={props.tourSteps && props.tourSteps.ref1}>
                 <TextArea
                   value={value}
                   onChange={(e) => setValue(e.target.value)}
@@ -135,7 +129,7 @@ export function QuizKnit() {
                   id="inputTextArea"
                 />
               </Flex>
-              <Flex justify="center" ref={ref2}>
+              <Flex justify="center" ref={props.tourSteps.ref2}>
                 <Button
                   type="primary"
                   onClick={onGenerateQuiz}
@@ -153,7 +147,7 @@ export function QuizKnit() {
         </Flex>
         <Flex vertical gap="small" align="center">
           <Flex
-            ref={ref3}
+            ref={props.tourSteps.ref3}
             vertical
             gap="12px"
             style={{
@@ -162,7 +156,7 @@ export function QuizKnit() {
               width: !isMobile ? "625px" : undefined,
             }}
           >
-            {quiz.length < 1 && (
+            {quiz == undefined && (
               <Flex vertical gap="12px">
                 <Typography.Text>
                   Your AI generated quiz will appear here.
@@ -172,9 +166,17 @@ export function QuizKnit() {
                   milky way.
                 </Typography.Text>
                 <Typography.Text>
+                  You can also view quizzes created by other users by in our
+                  <Link to={"/explore"} style={{ color: "#604CE2" }}>
+                    {" "}
+                    <strong>Explore</strong>
+                  </Link>{" "}
+                  page.
+                </Typography.Text>
+                <Typography.Text>
                   Click{" "}
                   <strong
-                    onClick={() => setOpenTour(true)}
+                    onClick={() => props.setOpenTour(true)}
                     style={{ cursor: "pointer", color: "#604CE2" }}
                   >
                     here
@@ -183,21 +185,22 @@ export function QuizKnit() {
                 </Typography.Text>
               </Flex>
             )}
-            {quiz.length > 0 &&
-              quiz.map((questionItem, index) => (
+            {quiz &&
+              quiz.questions.length > 0 &&
+              quiz.questions.map((questionItem, index) => (
                 <QuestionAndOptions
                   questionItem={questionItem}
                   index={index}
                   key={index}
                 />
               ))}
-            {quiz.length > 0 && (
+            {quiz && quiz.questions.length > 0 && (
               <Flex justify="center">
                 <Button
                   type="primary"
                   icon={<SaveOutlined />}
                   onClick={saveQuiz}
-                  loading={savingQuiz}
+                  loading={savingQuiz || loading}
                 >
                   Save Quiz
                 </Button>
@@ -208,7 +211,6 @@ export function QuizKnit() {
           {loading && <Spin indicator={<LoadingOutlined spin />} />}
         </Flex>
       </Flex>
-      <Tour open={openTour} onClose={() => setOpenTour(false)} steps={steps} />
       <SavedQuizModal
         quizId={savedQuizId}
         isModalOpen={isModalOpen}

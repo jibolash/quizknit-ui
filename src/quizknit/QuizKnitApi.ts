@@ -1,4 +1,4 @@
-import { Question, QuizTextInput } from "./QuizKnit";
+import { Quiz, QuizTextInput } from "./QuizKnit";
 
 function createRequest(path: string, init: RequestInit): Request {
   // const origin = "http://localhost:3000/";
@@ -23,19 +23,24 @@ export const QuizKnitApi = {
       throw new Error("Could not create quiz");
     }
     const createdQuiz = await response.json();
+    console.log("created", response.status);
     return JSON.parse(createdQuiz);
   },
 
-  async saveQuiz(quiz: Question[]): Promise<any> {
+  async saveQuiz(quiz: Quiz): Promise<any> {
     const request = createRequest("quiz/saveQuestions", {
       method: "POST",
-      body: JSON.stringify({ quiz: quiz }),
+      body: JSON.stringify({
+        questions: quiz.questions,
+        quizTitle: quiz.quizTitle,
+      }),
       headers: {
         "content-type": "application/json",
       },
     });
     const response = await fetch(request);
     if (response.status !== 201) {
+      console.log("response", response);
       throw new Error("Could not save questions");
     }
     const savedQuiz = await response.json();
@@ -50,6 +55,17 @@ export const QuizKnitApi = {
       throw new Error("Could not get quiz");
     }
     const quizResponse = await response.json();
-    return quizResponse.quiz;
+    console.log("quizResponse", quizResponse);
+    return quizResponse;
+  },
+
+  async getAllQuizzes(): Promise<any> {
+    const request = createRequest(`quiz/all/quizzes`, { method: "GET" });
+    const response = await fetch(request);
+    if (response.status !== 200) {
+      throw new Error("Could not get all quizzes");
+    }
+    const allQuizzesResponse = await response.json();
+    return allQuizzesResponse;
   },
 };

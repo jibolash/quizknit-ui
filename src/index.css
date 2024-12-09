@@ -38,3 +38,12 @@ body {
   width: 18px;
   font-size: 12px;
 }
+
+.activeNavLink {
+  color: white;
+  border-bottom: 1px solid white;
+}
+
+.inactiveNavLink {
+  color: white;
+}

@@ -1,17 +1,15 @@
 import { Button, Flex, Modal, Typography } from "antd";
-// import imgUrl from "../assets/share-img.png";
 
-interface SavedQuizModalProps {
+interface SharedQuizModalProps {
   quizId: string;
   isModalOpen: boolean;
   setIsModalOpen: (value: React.SetStateAction<boolean>) => void;
 }
 
-export function SavedQuizModal({
-  quizId,
+export function ShareQuizModal({
   isModalOpen,
   setIsModalOpen,
-}: SavedQuizModalProps) {
+}: SharedQuizModalProps) {
   // const handleOk = () => {
   //   setIsModalOpen(false);
   // };
@@ -22,7 +20,7 @@ export function SavedQuizModal({
 
   return (
     <Modal
-      // title="Save Quiz"
+      title="Share Quiz"
       open={isModalOpen}
       // onOk={handleOk}
       onCancel={handleCancel}
@@ -33,11 +31,9 @@ export function SavedQuizModal({
       ]}
     >
       <Flex vertical align="center">
-        {/* <Image width={200} src={imgUrl} preview={false} /> */}
-        <h3>Your quiz has been saved!</h3>
-        <p>Share it with the link below.</p>
+        <p>Share quiz with the link below.</p>
         <Typography.Paragraph copyable style={{ fontSize: "16px" }}>
-          {`${window.location.href}quiz/${quizId}`}
+          {window.location.href}
         </Typography.Paragraph>
       </Flex>
     </Modal>
