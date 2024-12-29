@@ -1,4 +1,4 @@
-import { Button, Flex, Spin, Typography } from "antd";
+import { Button, Col, Flex, Row, Spin, Typography } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { useState } from "react";
 import { QuizKnitApi } from "./QuizKnitApi";
@@ -41,7 +41,7 @@ interface QuizKnitProps {
 }
 
 export function QuizKnit(props: QuizKnitProps) {
-  const [value, setValue] = useState(sampleInput);
+  const [value, setValue] = useState(sampleInput[0].text);
   const [loading, setLoading] = useState(false);
   const [quiz, setQuiz] = useState<Quiz>();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -90,126 +90,137 @@ export function QuizKnit(props: QuizKnitProps) {
 
   return (
     <>
-      <Flex
-        justify="center"
-        wrap="wrap"
-        gap={"small"}
-        id="homeContainer"
-        style={{ padding: "12px" }}
-      >
-        <Flex vertical gap="small" align="center">
-          <Flex ref={props.tourSteps.ref3} vertical gap="12px">
-            <Flex
-              style={{
-                padding: "20px",
-                backgroundColor: "white",
-              }}
-              vertical
-              gap="12px"
-              align="center"
-            >
-              <Typography.Text>
-                Type or paste text you want to generate a quiz from in the
-                textbox and click{" "}
-                <strong style={{ color: "#604CE2" }}>Generate Quiz</strong>{" "}
-                below
-              </Typography.Text>
-              <Flex ref={props.tourSteps && props.tourSteps.ref1}>
-                <TextArea
-                  value={value}
-                  onChange={(e) => setValue(e.target.value)}
-                  placeholder="Type or paste text you want to generate a quiz from here"
-                  autoSize={{ minRows: 15 }}
-                  style={{
-                    // width: "100%",
-                    width: isMobile ? 350 : 550,
-                  }}
-                  disabled={loading}
-                  id="inputTextArea"
-                />
-              </Flex>
-              <Flex justify="center" ref={props.tourSteps.ref2}>
-                <Button
-                  type="primary"
-                  onClick={onGenerateQuiz}
-                  loading={loading}
-                  icon={<RocketOutlined />}
-                  disabled={value.length === 0}
-                  size="large"
-                  style={{ backgroundColor: "#604CE2" }}
+      <Row gutter={[4, 4]} justify={"center"}>
+        <Col xl={12} lg={12} md={12} sm={24} style={{ marginTop: "20px" }}>
+          <Flex vertical gap="small" align="center">
+            <Flex ref={props.tourSteps.ref3} vertical gap="12px">
+              <Flex
+                style={{
+                  padding: "20px",
+                  backgroundColor: "white",
+                  overflow: "hidden",
+                }}
+                vertical
+                gap="12px"
+                align="center"
+              >
+                <Typography.Text>
+                  Type or paste text you want to generate a quiz from in the
+                  textbox and click{" "}
+                  <strong style={{ color: "#604CE2" }}>Generate Quiz</strong>{" "}
+                  below
+                </Typography.Text>
+                {/* <Flex gap={4} className="scrollingButtons">
+                {sampleInput.map((s) => (
+                  <Button onClick={() => setValue(s.text)}>{s.title}</Button>
+                ))}
+              </Flex> */}
+                <Flex
+                  ref={props.tourSteps && props.tourSteps.ref1}
+                  style={{ width: "95%" }}
                 >
-                  Generate Quiz
-                </Button>
+                  <TextArea
+                    value={value}
+                    onChange={(e) => setValue(e.target.value)}
+                    placeholder="Type or paste text you want to generate a quiz from here"
+                    autoSize={{ minRows: 15 }}
+                    style={
+                      {
+                        // width: "100%",
+                        // width: isMobile ? 350 : 550,
+                        // maxWidth: "100%",
+                      }
+                    }
+                    disabled={loading}
+                    id="inputTextArea"
+                  />
+                </Flex>
+                <Flex justify="center" ref={props.tourSteps.ref2}>
+                  <Button
+                    type="primary"
+                    onClick={onGenerateQuiz}
+                    loading={loading}
+                    icon={<RocketOutlined />}
+                    disabled={value.length === 0}
+                    size="large"
+                    style={{ backgroundColor: "#604CE2" }}
+                  >
+                    Generate Quiz
+                  </Button>
+                </Flex>
               </Flex>
             </Flex>
           </Flex>
-        </Flex>
-        <Flex vertical gap="small" align="center">
-          <Flex
-            ref={props.tourSteps.ref3}
-            vertical
-            gap="12px"
-            style={{
-              padding: "20px",
-              backgroundColor: "white",
-              width: !isMobile ? "625px" : undefined,
-            }}
-          >
-            {quiz == undefined && (
-              <Flex vertical gap="12px">
-                <Typography.Text>
-                  Your AI generated quiz will appear here.
-                </Typography.Text>
-                <Typography.Text>
-                  Just exploring? Try out QuizKnit using our demo text about the
-                  milky way.
-                </Typography.Text>
-                <Typography.Text>
-                  You can also view quizzes created by other users by in our
-                  <Link to={"/explore"} style={{ color: "#604CE2" }}>
-                    {" "}
-                    <strong>Explore</strong>
-                  </Link>{" "}
-                  page.
-                </Typography.Text>
-                <Typography.Text>
-                  Click{" "}
-                  <strong
-                    onClick={() => props.setOpenTour(true)}
-                    style={{ cursor: "pointer", color: "#604CE2" }}
+        </Col>
+        <Col xl={12} lg={12} md={12} sm={24}>
+          <Flex vertical gap="small" align="center">
+            <Flex
+              ref={props.tourSteps.ref3}
+              vertical
+              gap="12px"
+              style={{
+                padding: "20px",
+                // backgroundColor: "white",
+                // width: "100%",
+                // width: !isMobile ? "625px" : undefined,
+              }}
+            >
+              {quiz == undefined && (
+                <Flex vertical gap="12px">
+                  <Typography.Text>
+                    Your AI generated quiz will appear here.
+                  </Typography.Text>
+                  <Typography.Text>
+                    Just exploring? Try out QuizKnit using our demo text about
+                    the milky way.
+                  </Typography.Text>
+                  <Typography.Text>
+                    You can also view quizzes created by other users by in our
+                    <Link to={"/explore"} style={{ color: "#604CE2" }}>
+                      {" "}
+                      <strong>Explore</strong>
+                    </Link>{" "}
+                    page.
+                  </Typography.Text>
+                  <Typography.Text>
+                    Click{" "}
+                    <strong
+                      onClick={() => props.setOpenTour(true)}
+                      style={{ cursor: "pointer", color: "#604CE2" }}
+                    >
+                      here
+                    </strong>{" "}
+                    for a quick app tour.
+                  </Typography.Text>
+                </Flex>
+              )}
+              {quiz &&
+                quiz.questions.length > 0 &&
+                quiz.questions.map((questionItem, index) => (
+                  <QuestionAndOptions
+                    questionItem={questionItem}
+                    index={index}
+                    key={index}
+                  />
+                ))}
+              {quiz && quiz.questions.length > 0 && (
+                <Flex justify="center">
+                  <Button
+                    type="primary"
+                    icon={<SaveOutlined />}
+                    onClick={saveQuiz}
+                    loading={savingQuiz || loading}
                   >
-                    here
-                  </strong>{" "}
-                  for a quick app tour.
-                </Typography.Text>
-              </Flex>
-            )}
-            {quiz &&
-              quiz.questions.length > 0 &&
-              quiz.questions.map((questionItem, index) => (
-                <QuestionAndOptions
-                  questionItem={questionItem}
-                  index={index}
-                  key={index}
-                />
-              ))}
-            {quiz && quiz.questions.length > 0 && (
-              <Flex justify="center">
-                <Button
-                  type="primary"
-                  icon={<SaveOutlined />}
-                  onClick={saveQuiz}
-                  loading={savingQuiz || loading}
-                >
-                  Save Quiz
-                </Button>
-              </Flex>
-            )}
-          </Flex>
+                    Save Quiz
+                  </Button>
+                </Flex>
+              )}
+            </Flex>
 
-          {loading && <Spin indicator={<LoadingOutlined spin />} />}
-        </Flex>
-      </Flex>
+            {loading && <Spin indicator={<LoadingOutlined spin />} />}
+          </Flex>
+        </Col>
+      </Row>
       <SavedQuizModal
         quizId={savedQuizId}
         isModalOpen={isModalOpen}

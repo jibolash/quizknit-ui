@@ -28,7 +28,7 @@ export function QuestionAndOptions({ questionItem, index }: QuestionsProps) {
       style={{
         padding: "12px",
         // borderRadius: "15px",
-        backgroundColor: "#F1F5F9",
+        backgroundColor: "white",
       }}
     >
       <Flex>
