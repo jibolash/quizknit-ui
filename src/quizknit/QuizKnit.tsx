@@ -1,10 +1,9 @@
 import { Button, Col, Flex, Row, Spin, Typography } from "antd";
 import TextArea from "antd/es/input/TextArea";
-import { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { QuizKnitApi } from "./QuizKnitApi";
 import { sampleInput } from "./sampleData";
 import { RocketOutlined, SaveOutlined } from "@ant-design/icons";
-import { isMobile } from "react-device-detect";
 import { QuestionAndOptions } from "./QuestionAndOptions";
 import { LoadingOutlined } from "@ant-design/icons";
 import { SavedQuizModal } from "./SavedQuizModal";
@@ -47,6 +46,18 @@ export function QuizKnit(props: QuizKnitProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [savingQuiz, setSavingQuiz] = useState(false);
   const [savedQuizId, setSavedQuizId] = useState("");
+  const scrollingButtons = useRef<any>(null);
+
+  useEffect(() => {
+    const buttons: any[] = Array.from(scrollingButtons.current?.children);
+    buttons.forEach((button) => {
+      scrollingButtons.current.appendChild(button);
+    });
+
+    const buttonWidth = buttons[0]?.offsetWidth; // Include margin
+    const totalWidth = buttonWidth * sampleInput.length;
+    scrollingButtons.current.style.width = `${totalWidth}px`;
+  });
 
   const onGenerateQuiz = async () => {
     setLoading(true);
@@ -91,76 +102,74 @@ export function QuizKnit(props: QuizKnitProps) {
   return (
     <>
       <Row gutter={[4, 4]} justify={"center"}>
-        <Col xl={12} lg={12} md={12} sm={24} style={{ marginTop: "20px" }}>
-          <Flex vertical gap="small" align="center">
-            <Flex ref={props.tourSteps.ref3} vertical gap="12px">
-              <Flex
-                style={{
-                  padding: "20px",
-                  backgroundColor: "white",
-                  overflow: "hidden",
-                }}
-                vertical
-                gap="12px"
-                align="center"
+        <Col xl={12} lg={12} md={12} sm={24}>
+          <Flex
+            style={{
+              padding: "20px",
+              backgroundColor: "white",
+              overflow: "hidden",
+            }}
+            vertical
+            gap="12px"
+            align="center"
+            ref={props.tourSteps.ref3}
+          >
+            <Typography.Text>
+              Type or paste text you want to generate a quiz from in the textbox
+              and click{" "}
+              <strong style={{ color: "#604CE2" }}>Generate Quiz</strong> below
+            </Typography.Text>
+            <Flex gap={4} className="scrollingButtons" ref={scrollingButtons}>
+              {sampleInput.map((s, id) => (
+                <Button onClick={() => setValue(s.text)} key={id}>
+                  {s.title}
+                </Button>
+              ))}
+            </Flex>
+            <Flex
+              ref={props.tourSteps && props.tourSteps.ref1}
+              style={{ width: "95%" }}
+            >
+              <TextArea
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+                placeholder="Type or paste text you want to generate a quiz from here"
+                autoSize={{ minRows: 15 }}
+                style={
+                  {
+                    // width: "100%",
+                    // width: isMobile ? 350 : 550,
+                    // maxWidth: "100%",
+                  }
+                }
+                disabled={loading}
+                id="inputTextArea"
+              />
+            </Flex>
+            <Flex justify="center" ref={props.tourSteps.ref2}>
+              <Button
+                type="primary"
+                onClick={onGenerateQuiz}
+                loading={loading}
+                icon={<RocketOutlined />}
+                disabled={value.length === 0}
+                size="large"
+                style={{ backgroundColor: "#604CE2" }}
               >
-                <Typography.Text>
-                  Type or paste text you want to generate a quiz from in the
-                  textbox and click{" "}
-                  <strong style={{ color: "#604CE2" }}>Generate Quiz</strong>{" "}
-                  below
-                </Typography.Text>
-                {/* <Flex gap={4} className="scrollingButtons">
-                {sampleInput.map((s) => (
-                  <Button onClick={() => setValue(s.text)}>{s.title}</Button>
-                ))}
-              </Flex> */}
-                <Flex
-                  ref={props.tourSteps && props.tourSteps.ref1}
-                  style={{ width: "95%" }}
-                >
-                  <TextArea
-                    value={value}
-                    onChange={(e) => setValue(e.target.value)}
-                    placeholder="Type or paste text you want to generate a quiz from here"
-                    autoSize={{ minRows: 15 }}
-                    style={
-                      {
-                        // width: "100%",
-                        // width: isMobile ? 350 : 550,
-                        // maxWidth: "100%",
-                      }
-                    }
-                    disabled={loading}
-                    id="inputTextArea"
-                  />
-                </Flex>
-                <Flex justify="center" ref={props.tourSteps.ref2}>
-                  <Button
-                    type="primary"
-                    onClick={onGenerateQuiz}
-                    loading={loading}
-                    icon={<RocketOutlined />}
-                    disabled={value.length === 0}
-                    size="large"
-                    style={{ backgroundColor: "#604CE2" }}
-                  >
-                    Generate Quiz
-                  </Button>
-                </Flex>
-              </Flex>
+                Generate Quiz
+              </Button>
             </Flex>
           </Flex>
         </Col>
         <Col xl={12} lg={12} md={12} sm={24}>
-          <Flex vertical gap="small" align="center">
+          <>
             <Flex
               ref={props.tourSteps.ref3}
               vertical
               gap="12px"
               style={{
                 padding: "20px",
-                // backgroundColor: "white",
+                backgroundColor: "white",
                 // width: "100%",
                 // width: !isMobile ? "625px" : undefined,
               }}
@@ -168,11 +177,8 @@ export function QuizKnit(props: QuizKnitProps) {
               {quiz == undefined && (
                 <Flex vertical gap="12px">
                   <Typography.Text>
-                    Your AI generated quiz will appear here.
-                  </Typography.Text>
-                  <Typography.Text>
-                    Just exploring? Try out QuizKnit using our demo text about
-                    the milky way.
+                    Your AI generated quiz will appear here. Just exploring? Try
+                    out QuizKnit using our demo text about the milky way.
                   </Typography.Text>
                   <Typography.Text>
                     You can also view quizzes created by other users by in our
@@ -215,10 +221,9 @@ export function QuizKnit(props: QuizKnitProps) {
                   </Button>
                 </Flex>
               )}
+              {loading && <Spin indicator={<LoadingOutlined spin />} />}
             </Flex>
-
-            {loading && <Spin indicator={<LoadingOutlined spin />} />}
-          </Flex>
+          </>
         </Col>
       </Row>
       <SavedQuizModal

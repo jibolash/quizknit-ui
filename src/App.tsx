@@ -114,7 +114,7 @@ function App() {
               </Flex>
             </Flex>
           </Flex>
-          <Flex id="main" justify="center">
+          <Flex id="main" justify="center" style={{ padding: "20px" }}>
             <Routes>
               <Route
                 path="/"
