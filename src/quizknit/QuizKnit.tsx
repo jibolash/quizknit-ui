@@ -108,6 +108,7 @@ export function QuizKnit(props: QuizKnitProps) {
               padding: "20px",
               backgroundColor: "white",
               overflow: "hidden",
+              borderRadius: "20px",
             }}
             vertical
             gap="12px"
@@ -117,7 +118,7 @@ export function QuizKnit(props: QuizKnitProps) {
             <Typography.Text>
               Type or paste text you want to generate a quiz from in the textbox
               and click{" "}
-              <strong style={{ color: "#604CE2" }}>Generate Quiz</strong> below
+              <strong style={{ color: "#18181B" }}>Generate Quiz</strong> below.
             </Typography.Text>
             <Flex gap={4} className="scrollingButtons" ref={scrollingButtons}>
               {sampleInput.map((s, id) => (
@@ -154,7 +155,7 @@ export function QuizKnit(props: QuizKnitProps) {
                 icon={<RocketOutlined />}
                 disabled={value.length === 0}
                 size="large"
-                style={{ backgroundColor: "#604CE2" }}
+                style={{ backgroundColor: "#18181B" }}
               >
                 Generate Quiz
               </Button>
@@ -170,6 +171,7 @@ export function QuizKnit(props: QuizKnitProps) {
               style={{
                 padding: "20px",
                 backgroundColor: "white",
+                borderRadius: "20px",
                 // width: "100%",
                 // width: !isMobile ? "625px" : undefined,
               }}
@@ -177,12 +179,11 @@ export function QuizKnit(props: QuizKnitProps) {
               {quiz == undefined && (
                 <Flex vertical gap="12px">
                   <Typography.Text>
-                    Your AI generated quiz will appear here. Just exploring? Try
-                    out QuizKnit using our demo text about the milky way.
+                    Your AI generated quiz will appear here.
                   </Typography.Text>
                   <Typography.Text>
                     You can also view quizzes created by other users by in our
-                    <Link to={"/explore"} style={{ color: "#604CE2" }}>
+                    <Link to={"/explore"} style={{ color: "#18181B" }}>
                       {" "}
                       <strong>Explore</strong>
                     </Link>{" "}
@@ -192,7 +193,7 @@ export function QuizKnit(props: QuizKnitProps) {
                     Click{" "}
                     <strong
                       onClick={() => props.setOpenTour(true)}
-                      style={{ cursor: "pointer", color: "#604CE2" }}
+                      style={{ cursor: "pointer", color: "#18181B" }}
                     >
                       here
                     </strong>{" "}

@@ -63,12 +63,14 @@ function App() {
     <ConfigProvider
       theme={{
         token: {
-          colorPrimary: "#604CE2",
+          colorPrimary: "#18181B",
         },
         components: {
           Button: {
             defaultShadow: "0 0 0 rgba(0, 0, 0, 0.02)",
             primaryShadow: "0 0 0 rgba(0, 0, 0, 0.02)",
+            borderRadiusLG: 20,
+            borderRadius: 20,
           },
           Input: {
             paddingBlock: 6,
@@ -81,7 +83,7 @@ function App() {
           <Flex
             align="center"
             id="navbar"
-            style={{ height: "60px", backgroundColor: "#604CE2" }}
+            style={{ height: "60px", backgroundColor: "#18181B" }}
             justify="space-between"
           >
             <NavLink
@@ -137,7 +139,7 @@ function App() {
           </Flex>
         </Flex>
         <Flex
-          justify="space-between"
+          justify="center"
           align="center"
           id="footer"
           style={{ height: "60px", margin: "0 12px 0 12px", fontSize: "14px" }}
@@ -146,11 +148,11 @@ function App() {
             <span className="logo-footer">Q</span>
             <span style={{ fontWeight: 600 }}>Quiz Knit</span>
           </Flex>
-          <Flex>
+          {/* <Flex>
             <Link to="/about" style={{ color: "gray" }}>
               About
             </Link>
-          </Flex>
+          </Flex> */}
         </Flex>
       </Flex>
       <Tour open={openTour} onClose={() => setOpenTour(false)} steps={steps} />
