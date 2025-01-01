@@ -1,6 +1,70 @@
+@font-face {
+	font-family: 'PPMori';
+	src: url('./assets/PPMori-Light.woff2') format('woff2'), url('./PPMori-Light.woff') format('woff');
+	font-weight: 300;
+	font-style: normal;
+	ascent-override: 95%;
+}
+
+@font-face {
+	font-family: 'PPMori';
+	src: url('./assets/PPMori-LightItalic.woff2') format('woff2'), url('./PPMori-LightItalic.woff') format('woff');
+	font-weight: 300;
+	font-style: italic;
+	ascent-override: 95%;
+}
+
+@font-face {
+	font-family: 'PPMori';
+	src: url('./assets/PPMori-Regular.woff2') format('woff2'), url('./PPMori-Regular.woff') format('woff');
+	font-weight: 400;
+	font-style: normal;
+	ascent-override: 95%;
+}
+
+@font-face {
+	font-family: 'PPMori';
+	src: url('./assets/PPMori-RegularItalic.woff2') format('woff2'), url('./PPMori-RegularItalic.woff') format('woff');
+	font-weight: 400;
+	font-style: italic;
+	ascent-override: 95%;
+}
+
+@font-face {
+	font-family: 'PPMori';
+	src: url('./assets/PPMori-Medium.woff2') format('woff2'), url('./PPMori-Medium.woff') format('woff');
+	font-weight: 500;
+	font-style: normal;
+	ascent-override: 95%;
+}
+
+@font-face {
+	font-family: 'PPMori';
+	src: url('./assets/PPMori-MediumItalic.woff2') format('woff2'), url('./PPMori-MediumItalic.woff') format('woff');
+	font-weight: 500;
+	font-style: italic;
+	ascent-override: 95%;
+}
+
+@font-face {
+	font-family: 'PPMori';
+	src: url('./assets/PPMori-Bold.woff2') format('woff2'), url('./PPMori-Bold.woff') format('woff');
+	font-weight: 600;
+	font-style: normal;
+	ascent-override: 95%;
+}
+
+@font-face {
+	font-family: 'PPMori';
+	src: url('./assets/PPMori-BoldItalic.woff2') format('woff2'), url('./PPMori-BoldItalic.woff') format('woff');
+	font-weight: 600;
+	font-style: italic;
+	ascent-override: 95%;
+}
+
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  /* font-family: "Inter",-apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif; */
+  font-family: PPMori, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   min-height: 100vh;
 }
 

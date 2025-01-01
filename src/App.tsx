@@ -98,7 +98,7 @@ function App() {
                 <Space size={4}>
                   <Flex gap={8}>
                     <span className="logo">Q</span>
-                    <span style={{ fontWeight: 600 }}>Quiz Knit</span>
+                    <span style={{ fontWeight: 500 }}>Quiz Knit</span>
                   </Flex>
                 </Space>
               </Flex>
@@ -146,7 +146,7 @@ function App() {
         >
           <Flex gap={8} align="center" justify="center">
             <span className="logo-footer">Q</span>
-            <span style={{ fontWeight: 600 }}>Quiz Knit</span>
+            <span style={{ fontWeight: 500 }}>Quiz Knit</span>
           </Flex>
           {/* <Flex>
             <Link to="/about" style={{ color: "gray" }}>
