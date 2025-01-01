@@ -27,7 +27,7 @@ export function QuestionAndOptions({ questionItem, index }: QuestionsProps) {
       key={index}
       style={{
         padding: "12px",
-        // borderRadius: "15px",
+        borderRadius: "20px",
         backgroundColor: "#F1F5F9",
       }}
     >

@@ -1,5 +1,5 @@
 import { ConfigProvider, Flex, Space, Tour, TourProps } from "antd";
-import { Link, NavLink, Route, Routes } from "react-router-dom";
+import { NavLink, Route, Routes } from "react-router-dom";
 import { QuizKnit } from "./quizknit/QuizKnit";
 import { ViewQuiz } from "./quizknit/ViewQuiz";
 import { About } from "./About";
