@@ -26,7 +26,7 @@ export function QuestionAndOptions({ questionItem, index }: QuestionsProps) {
       gap="5px"
       key={index}
       style={{
-        padding: "12px",
+        padding: "20px",
         borderRadius: "20px",
         backgroundColor: "#F1F5F9",
       }}
