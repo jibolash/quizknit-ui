@@ -40,7 +40,9 @@ interface QuizKnitProps {
 }
 
 export function QuizKnit(props: QuizKnitProps) {
-  const [value, setValue] = useState(sampleInput[0].text);
+  const [value, setValue] = useState(
+    sampleInput[Math.floor(Math.random() * sampleInput.length)].text
+  );
   const [loading, setLoading] = useState(false);
   const [quiz, setQuiz] = useState<Quiz>();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -58,6 +60,10 @@ export function QuizKnit(props: QuizKnitProps) {
     const totalWidth = buttonWidth * sampleInput.length;
     scrollingButtons.current.style.width = `${totalWidth}px`;
   });
+
+  // useEffect(() => {
+  //   onGenerateQuiz();
+  // }, []);
 
   const onGenerateQuiz = async () => {
     setLoading(true);
@@ -135,7 +141,7 @@ export function QuizKnit(props: QuizKnitProps) {
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
                 placeholder="Type or paste text you want to generate a quiz from here"
-                autoSize={{ minRows: 15 }}
+                autoSize={{ maxRows: 20, minRows: 20 }}
                 style={
                   {
                     // width: "100%",
@@ -155,7 +161,10 @@ export function QuizKnit(props: QuizKnitProps) {
                 icon={<RocketOutlined />}
                 disabled={value.length === 0}
                 size="large"
-                style={{ backgroundColor: "#18181B" }}
+                style={{
+                  backgroundColor: "#18181B",
+                  color: value.length === 0 ? "gray" : "white",
+                }}
               >
                 Generate Quiz
               </Button>

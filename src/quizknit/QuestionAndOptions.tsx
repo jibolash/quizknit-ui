@@ -51,9 +51,9 @@ export function QuestionAndOptions({ questionItem, index }: QuestionsProps) {
             ))}
           </Space>
         </Radio.Group>
-        {correctAnswerSelected == null && (
+        {/* {correctAnswerSelected == null && (
           <Flex style={{ height: "18px", opacity: 0 }}>ff</Flex>
-        )}
+        )} */}
         {correctAnswerSelected == false && (
           <Flex style={{ color: "red" }}>Wrong answer, try again</Flex>
         )}

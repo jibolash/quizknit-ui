@@ -124,3 +124,12 @@ body {
     transform: translateX(-400px);
   }
 }
+
+@keyframes fadeIn {
+	from {
+	  opacity: 0;
+	}
+	to {
+	  opacity: 1;
+	}
+  }

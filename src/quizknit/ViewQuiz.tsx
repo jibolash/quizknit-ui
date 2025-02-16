@@ -45,7 +45,16 @@ export function ViewQuiz() {
 
   if (!quizLoaded) {
     return (
-      <Flex vertical gap="12px" style={{ marginTop: "12px" }}>
+      <Flex
+        vertical
+        gap="12px"
+        style={{
+          marginTop: "12px",
+          backgroundColor: "#fff",
+          padding: "20px",
+          borderRadius: "20px",
+        }}
+      >
         <p>
           Could not load quiz, please confirm the link to the quiz is correct
         </p>
@@ -54,7 +63,16 @@ export function ViewQuiz() {
   }
 
   return (
-    <Flex vertical gap="12px" style={{ marginTop: "12px" }}>
+    <Flex
+      vertical
+      gap="12px"
+      style={{
+        marginTop: "12px",
+        backgroundColor: "#fff",
+        padding: "20px",
+        borderRadius: "20px",
+      }}
+    >
       <Flex align="center" justify="space-between">
         <h3>{quiz?.quizTitle}</h3>
         <Button

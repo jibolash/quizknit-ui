@@ -1,8 +1,7 @@
 import { Quiz, QuizTextInput } from "./QuizKnit";
 
 function createRequest(path: string, init: RequestInit): Request {
-  // const origin = "http://localhost:3000/";
-  const origin = "https://quizknit-api.fly.dev/";
+  const origin = "http://localhost:3000/";
   const apiPath = "api/";
   const url = `${origin}${apiPath}${path}`;
   init.headers = { ...init.headers, "X-BFF-CSRF": "true" };

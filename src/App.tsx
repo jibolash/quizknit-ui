@@ -5,6 +5,7 @@ import { ViewQuiz } from "./quizknit/ViewQuiz";
 import { About } from "./About";
 import { Explore } from "./quizknit/Explore";
 import { useRef, useState } from "react";
+import { NotFound } from "./NotFound";
 // import { SignIn } from "./SignIn";
 // import { SignUp } from "./SignUp";
 // import { useEffect, useState } from "react";
@@ -96,9 +97,11 @@ function App() {
             >
               <Flex align="end">
                 <Space size={4}>
-                  <Flex gap={8}>
+                  <Flex gap={8} justify="center" align="center">
                     <span className="logo">Q</span>
-                    <span style={{ fontWeight: 500 }}>Quiz Knit</span>
+                    <span style={{ fontWeight: 500, fontSize: "16px" }}>
+                      Quiz Knit
+                    </span>
                   </Flex>
                 </Space>
               </Flex>
@@ -110,6 +113,7 @@ function App() {
                   className={({ isActive }) =>
                     isActive ? "activeNavLink" : "inactiveNavLink"
                   }
+                  style={{ textDecoration: "none", color: "white" }}
                 >
                   Explore
                 </NavLink>
@@ -133,6 +137,7 @@ function App() {
               <Route path="/quiz/:id" element={<ViewQuiz />} />
               <Route path="/about" element={<About />} />
               <Route path="/explore" element={<Explore />} />
+              <Route path="*" element={<NotFound />} />
               {/* <Route path="/login" element={<SignIn />} /> */}
               {/* <Route path="/signup" element={<SignUp />} /> */}
             </Routes>
@@ -146,7 +151,17 @@ function App() {
         >
           <Flex gap={8} align="center" justify="center">
             <span className="logo-footer">Q</span>
-            <span style={{ fontWeight: 500 }}>Quiz Knit</span>
+            <span style={{ fontWeight: 500 }}>
+              Quiz Knit by{" "}
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: "none", color: "black" }}
+                href={"https://www.linkedin.com/in/mayowa-sogbein/"}
+              >
+                Mayowa Sogbein
+              </a>
+            </span>
           </Flex>
           {/* <Flex>
             <Link to="/about" style={{ color: "gray" }}>
